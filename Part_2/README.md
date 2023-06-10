@@ -31,19 +31,25 @@ The first layer (layer1) is defined as a sequential composition of several opera
 - nn.ReLU() applies the rectified linear unit activation function element-wise to the output of the previous convolutional layer.
 - nn.BatchNorm2d(8) applies batch normalization to the previous layer's output along the channel dimension (2nd dimension).
 - nn.Conv2d(8, 16, 3, padding=1) creates another convolutional layer with 8 input channels, 16 output channels, and a kernel size of 3x3.
+
     Input Size - 28 x 28 x 8
     Output Size - 28 x 28 x 16
     Receptive Field - 5 x 5
+
 - nn.ReLU() applies the rectified linear unit activation function to the output of the previous convolutional layer.
 - nn.BatchNorm2d(16) applies batch normalization.
 - nn.MaxPool2d(2, 2) performs 2x2 max pooling with a stride of 2, reducing the spatial dimensions of the input tensor by half.
+
     Input Size - 28 x 28 x 16
     Output Size - 14 x 14 x 16
     Receptive Field - 10 x 10
+
 - nn.Conv2d(16, 8, 1) creates a 1x1 convolutional layer with 16 input channels and 8 output channels.
+
     Input Size - 14 x 14 x 16
     Output Size - 10 x 10 x 8
     Receptive Field - 10 x 10
+
 - nn.Dropout(0.05) applies dropout regularization by randomly setting 5% of the elements of the previous layer's output to zero during training.
 
 ## Layer 2
@@ -51,27 +57,35 @@ The first layer (layer1) is defined as a sequential composition of several opera
 The second layer (layer2) is defined in a similar manner to layer1:
 
 - nn.Conv2d(8, 16, 3) creates a convolutional layer with 8 input channels, 16 output channels, and a kernel size of 3x3.
+
     Input Size - 14 x 14 x 16
     Output Size - 8 x 8 x 16
     Receptive Field - 12 x 12
+
 - nn.ReLU() applies the rectified linear unit activation function.
 - nn.BatchNorm2d(16) applies batch normalization.
 - nn.Conv2d(16, 32, 3) creates a convolutional layer with 16 input channels, 32 output channels, and a kernel size of 3x3.
+
     Input Size - 8 x 8 x 16
     Output Size - 6 x 6 x 32
     Receptive Field - 14 x 14
+
 - nn.ReLU() applies the rectified linear unit activation function.
 - nn.BatchNorm2d(32) applies batch normalization.
 - nn.Conv2d(32, 32, 3) creates a convolutional layer with 32 input channels, 32 output channels, and a kernel size of 3x3.
+
     Input Size - 6 x 6 x 32
     Output Size - 4 x 4 x 32
     Receptive Field - 16 x 16
+
 - nn.ReLU() applies the rectified linear unit activation function.
 - nn.BatchNorm2d(32) applies batch normalization.
 - nn.MaxPool2d(2, 2) performs 2x2 max pooling with a stride of 2.
+
     Input Size - 4 x 4 x 32
     Output Size - 2 x 2 x 32
     Receptive Field - 32 x 32
+
 - nn.Dropout(0.05) applies dropout regularization.
 
 ## Convolutional Layer 3
@@ -79,9 +93,11 @@ The second layer (layer2) is defined in a similar manner to layer1:
 The third convolutional layer (conv3) consists of the following operations:
 
 - nn.Conv2d(32, 10, 3) creates a convolutional layer with 32 input channels, 10 output channels, and a kernel size of 3x3.
+
     Input Size - 2 x 2 x 32
     Output Size - 1 x 1 x 10
     Receptive Field - 34 x 34
+
 - nn.ReLU() applies the rectified linear unit activation function.
 - nn.BatchNorm2d(10) applies batch normalization.
 - nn.MaxPool2d(2, 2) performs 2x2 max pooling with a stride of 2.
