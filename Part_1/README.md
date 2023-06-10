@@ -14,7 +14,7 @@ Understanding backpropagation is crucial in the field of neural networks as it e
 
 ### Step by Step Description
 
--   ![FCL in question](/Formulae.png)
+-   ![FCL in question](../Part_1/Formulae.png)
 
 -   `Summary of the FCL`
 
