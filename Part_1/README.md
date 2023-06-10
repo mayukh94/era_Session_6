@@ -14,7 +14,7 @@ Understanding backpropagation is crucial in the field of neural networks as it e
 
 ### Step by Step Description
 
--   ![FCL in question](/images/fcl.png)
+-   ![FCL in question](../images/fcl.png)
 
 -   `Summary of the FCL`
 
@@ -23,13 +23,21 @@ Understanding backpropagation is crucial in the field of neural networks as it e
     `Terminology`:
 
     `i1, i2` - inputs
+
     `w1, w2, w3, w4, w5, w6, w7, w8` - weights
+
     `h1, h2` - neurons containing values of inputs multiplied with weights
+
     `a_h1, a_h2` - obtained by applying sigmoid function (activation) on h1 and h2
+
     `o1, o2` - neurons containing values of h1 and h2 multiplied with weights
+
     `a_o1, a_o2` - obtained by applying sigmoid function (activation) on o1 and o2
+
     `t1, t2` - target outputs
+
     `E1, E2` - Loss (calculated by custom defined functions)
+
     `E_Total` - Total Loss (E1+E2)
     
     `Basic Calculations in the FCL`:
@@ -54,18 +62,28 @@ Understanding backpropagation is crucial in the field of neural networks as it e
 
     `E_total versus w5`
 
-     Since E_total is calculated by E1+E2 and we can see that w5 has no effect on E2 (from the dependency graph), we can say that 
-     ```
-     ∂E_total/∂w5 = ∂E1/∂w5					
-     ```
-     Now to calculate ∂E1/∂w5 we can trace it's dependencies and use the chaining mechanism of derivates to come up with the formula, like so:
+    Since E_total is calculated by E1+E2 and we can see that w5 has no effect on E2 (from the dependency graph), we can say that 
     ```
-     ∂E1/∂w5 = ∂E1/∂a_o1*∂a_o1/∂o1*∂o1/∂w5					
+    ∂E_total/∂w5 = ∂E1/∂w5					
+    ```
+    To calculate ```∂E1/∂w5``` we can trace it's dependencies and use the chaining mechanism of derivates to come up with the formula, like so:
+    ```
+    ∂E1/∂w5 = ∂E1/∂a_o1*∂a_o1/∂o1*∂o1/∂w5					
     ```
     This is obvious from looking at the depdency graph (E1 depends on a_o1, a_o1 in turn depends on o1 and o1 depends on w5. For now we stop at w5 as that's the weight we are interested in.
 
-    Now ∂E1/∂a_o1 we can see will be ```∂E1/∂a_o1 =  ∂(½ * (t1 - a_o1)²)/∂a_o1 = (a_01 - t1)```
-    
+    Now ```∂E1/∂a_o1``` we can see will be ```∂E1/∂a_o1 =  ∂(½ * (t1 - a_o1)²)/∂a_o1 = (a_01 - t1)``` by applying partial derivate on the formula of E1 against a_o1.
+
+    Getting ```∂a_o1/∂o1``` is straightforward as well since a_o1 is the sigmoid of o1, therefore the partial derivative will be ```a_o1 * (1 - a_o1)```.
+
+    Finally ```∂o1/∂w5``` can also be easily obtained as o1 = a_h1*w5 (w6 assumed constant for the purposes of derivatives) and therefore the partial derivate will be ```a_h1```.
+
+    Put together this gives us 
+    ```
+    ∂E_total/∂w5 = ∂E1/∂w5 = (a_01 - t1) * a_o1 * (1 - a_o1) *  a_h1							
+    ```
+
+    Similar logic can be utilized to calculate ```∂E_total/∂w5, ∂E_total/∂w6, ∂E_total/∂w7 and ∂E_total/∂w8```. (Not explicitly listing steps in the interest of brevity)
 
 -   `S5.ipynb`    
     
