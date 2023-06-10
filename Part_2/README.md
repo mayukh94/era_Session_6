@@ -23,9 +23,11 @@ The model in question is made up of several layers, they are as follows:
 The first layer (layer1) is defined as a sequential composition of several operations
 
 - nn.Conv2d(1, 8, 3, padding=1) creates a 2-dimensional convolutional layer with 1 input channel, 8 output channels, and a kernel size of 3x3. Padding of 1 is applied to ensure the spatial dimensions of the input and output tensors are the same.
+
     Input Size - 28 x 28 x 1
     Output Size - 28 x 28 x 8
     Receptive Field - 3 x 3
+
 - nn.ReLU() applies the rectified linear unit activation function element-wise to the output of the previous convolutional layer.
 - nn.BatchNorm2d(8) applies batch normalization to the previous layer's output along the channel dimension (2nd dimension).
 - nn.Conv2d(8, 16, 3, padding=1) creates another convolutional layer with 8 input channels, 16 output channels, and a kernel size of 3x3.
