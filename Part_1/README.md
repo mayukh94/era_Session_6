@@ -14,7 +14,7 @@ Understanding backpropagation is crucial in the field of neural networks as it e
 
 ### Step by Step Description
 
--   ![FCL in question](../Part_1/Formulae.png)
+-   ![FCL in question](../Part_1/fcl.png)
 
 -   `Summary of the FCL`
 
@@ -72,7 +72,7 @@ Understanding backpropagation is crucial in the field of neural networks as it e
     ```
     This is obvious from looking at the depdency graph (E1 depends on a_o1, a_o1 in turn depends on o1 and o1 depends on w5. For now we stop at w5 as that's the weight we are interested in.
 
-    Now ```∂E1/∂a_o1``` we can see will be ```∂E1/∂a_o1 =  ∂(½ * (t1 - a_o1)²)/∂a_o1 = (a_01 - t1)``` by applying partial derivate on the formula of E1 against a_o1.
+    Now ```∂E1/∂a_o1``` we can see will be ```∂E1/∂a_o1 =  ∂(½ * (t1 - a_o1)²)/∂a_o1 = (a_01 - t1)``` by applying partial derivative on the formula of E1 against a_o1.
 
     Getting ```∂a_o1/∂o1``` is straightforward as well since a_o1 is the sigmoid of o1, therefore the partial derivative will be ```a_o1 * (1 - a_o1)```.
 
@@ -83,25 +83,89 @@ Understanding backpropagation is crucial in the field of neural networks as it e
     ∂E_total/∂w5 = ∂E1/∂w5 = (a_01 - t1) * a_o1 * (1 - a_o1) *  a_h1							
     ```
 
-    Similar logic can be utilized to calculate ```∂E_total/∂w5, ∂E_total/∂w6, ∂E_total/∂w7 and ∂E_total/∂w8```. (Not explicitly listing steps in the interest of brevity)
+    Similar logic can be utilized to calculate ```∂E_total/∂w6, ∂E_total/∂w7 and ∂E_total/∂w8```. (Not explicitly listing steps in the interest of brevity)
 
--   `S5.ipynb`    
+
+    `E_total versus w1`
+
+    Now by looking at the dependency graph we can plainly see that w1 affects both E1 and E2 through h1. 
+
+    So the equation can be rewritten as follows:
+
+    ```
+    ∂E_total/∂w1 = ∂E_total/∂a_h1 * ∂a_h1/∂h1 * ∂h1/∂w1					
+    ```
+    where 
+    ```
+    ∂E_total/∂a_h1 = ∂E1/∂a_h1 + ∂E2/∂a_h1
+    ```
+
+    Now to calculate ```∂E1/∂a_h1``` we again look at the dependency graph and see that it's equal to 
+    ```
+    ∂E1/∂a_h1 = ∂E1/∂a_o1 * ∂a_o1/∂o1 * ∂o1/∂a_h1
+    ```
+
+    We already have the values of ∂E1/∂a_o1 and ∂a_o1/∂o1 from the previous steps. ```∂o1/∂a_h1``` can be seen to be w5 as ```o1 = a_h1*w5```. This gives us
+    ```
+    ∂E1/∂a_h1 = (a_01 - t1) * a_o1 * (1 - a_o1) * w5								
+    ```
+
+    Similarly ```∂E2/∂a_h1``` can be calculated
+    ```
+    ∂E2/∂a_h1 = ∂E2/∂a_o2 * ∂a_o2/∂o2 * ∂o2/∂a_h1
+    ```
+    which gives us
+    ```
+    ∂E2/∂a_h1 = (a_02 - t2) * a_o2 * (1 - a_o2) * w7								
+    ```
+
+    Finally combining these gives us
+    ```
+    ∂E_total/∂w1 = ((a_01 - t1) * a_o1 * (1 - a_o1) * w5 +  (a_02 - t2) * a_o2 * (1 - a_o2) * w7) * a_h1 * (1 - a_h1) * i1
+    ```.
+
+    Similar logic can be utilized to calculate ```∂E_total/∂w2, ∂E_total/∂w3, ∂E_total/∂w4```.											
+
+-   `Calculating Gradients and Back Propagation`    
     
-    The file serves as the entry point of the project. It orchestrates the execution of the entire system and manages the overall workflow. It imports and utilizes functions from model.py and utils.py to perform various tasks.
-    
-    It performs the following tasks
-    
-    1. Defines the transformations to be performed on the dataset for both training and testing purposes.
-    2. Imports the required dataset and applies the requisite transforms
-    3. Defines the batch size and readies the train and test data loaders.
-    4. Instantiates the model defined in model.py and trains+tests the model (by utilising the train/test functions defined in the utility file) for 20 epochs while ensuring proper backpropagation.
-    5. Finally it uses the plotting function defined in the utility file to plot the loss and accuracy of the model.
+    Once ready with the equations we plug in the expected values for w1...., i1.. to get the computed values including loss (E1, E2 and E_total).
 
-## ✨ Summary
+    In the next and (following iterations) we calculate the gradients and then update the weights by multiplying with the learning rate.
 
-Here's a generated summary of the model for an input of `(1, 28, 28)`
+    For example for w1: 
+    ```
+    w1(i+1) = w1(i) - learning rate * ∂E_total/∂w1
+    ```
 
-![Summary](/summary.png)
+    So on and so forth.
+
+## ✨ Experimentation
+
+Here are the plotted graphs of the change in loss over a number of iterations and how it changes according to the value of the learning rate.
+
+`Learning Rate - 0.1`
+
+![Learning Rate - 0.1](../Part_1/0.1.png)
+
+`Learning Rate - 0.2`
+
+![Learning Rate - 0.2](../Part_1/0.2.png)
+
+`Learning Rate - 0.5`
+
+![Learning Rate - 0.5](../Part_1/0.5.png)
+
+`Learning Rate - 0.8`
+
+![Learning Rate - 0.8](../Part_1/0.8.png)
+
+`Learning Rate - 1`
+
+![Learning Rate - 1](../Part_1/1.png)
+
+`Learning Rate - 2`
+
+![Learning Rate - 2](../Part_1/2.png)
 
 ## 🙌 Contributing
 
